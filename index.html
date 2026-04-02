@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a237e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>FUTURE WORK - Orientation</title>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a237e'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='white' font-size='55'%3E🎓%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: linear-gradient(135deg, #0a0f1a, #0a1a2a); color: #fff; min-height: 100vh; padding: 20px; }
+    .page { display: none; max-width: 800px; margin: auto; animation: fadeIn 0.5s ease; }
+    .active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    h1 { font-size: 2.2rem; text-align: center; background: linear-gradient(135deg, #3f51b5, #1a237e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    h2 { font-size: 1.6rem; text-align: center; color: #3f51b5; margin-bottom: 20px; }
+    .logo { width: 100px; height: 100px; background: linear-gradient(135deg, #1a237e, #0d1b4a); border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(63,81,181,0.5); }
+    .logo i { font-size: 3rem; color: #ffd700; }
+    button { background: linear-gradient(135deg, #3f51b5, #1a237e); color: white; border: none; padding: 12px 28px; border-radius: 40px; font-size: 1rem; font-weight: bold; cursor: pointer; margin: 8px; transition: all 0.3s; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(63,81,181,0.4); }
+    .btn-outline { background: transparent; border: 2px solid #3f51b5; color: #3f51b5; }
+    .btn-outline:hover { background: #3f51b5; color: white; }
+    .btn-small { padding: 8px 20px; font-size: 0.9rem; }
+    .btn-danger { background: #8b0000; }
+    .btn-gold { background: #ffd700; color: #1a237e; }
+    .btn-orange { background: #ff6600; color: white; }
+    .floating-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+    .menu-btn { width: 55px; height: 55px; border-radius: 50%; background: #1a237e; border: 2px solid #ffd700; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; }
+    .menu-items { position: absolute; bottom: 70px; right: 0; background: rgba(26,35,126,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 10px; display: none; flex-direction: column; gap: 8px; min-width: 180px; border: 1px solid #ffd700; }
+    .menu-items a { color: white; text-decoration: none; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .menu-items a:hover { background: #3f51b5; }
+    .floating-menu.open .menu-items { display: flex; }
+    .question-card { background: rgba(15,25,45,0.9); padding: 20px; margin: 20px 0; border-radius: 20px; border-left: 4px solid #3f51b5; text-align: left; }
+    .question-card p { font-weight: bold; margin-bottom: 15px; color: #3f51b5; }
+    .question-card label { display: block; margin: 10px 0; cursor: pointer; color: #ddd; }
+    .question-card input { margin-right: 12px; accent-color: #3f51b5; }
+    .question-card input[type="text"] { width: 100%; padding: 12px; background: #0a0f1a; border: 1px solid #3f51b5; border-radius: 12px; color: white; }
+    .metier-card { background: linear-gradient(135deg, rgba(26,35,126,0.2), rgba(15,25,45,0.9)); padding: 20px; margin: 15px 0; border-radius: 20px; border-left: 4px solid #ffd700; text-align: left; }
+    .metier-card strong { font-size: 1.3rem; color: #ffd700; display: block; margin-bottom: 12px; }
+    .badge { background: rgba(63,81,181,0.3); padding: 4px 12px; border-radius: 30px; font-size: 0.75rem; display: inline-block; margin-top: 10px; color: #ffd700; }
+    .premium-badge { background: #ffd700; color: #1a237e; padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; display: inline-block; margin-left: 10px; }
+    .premium-card { background: linear-gradient(135deg, #1a237e, #0d1b4a); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; margin: 20px 0; text-align: center; }
+    .premium-card .price { font-size: 1.8rem; font-weight: bold; color: #ffd700; }
+    .share-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0; }
+    .share-btn { padding: 10px 20px; border-radius: 40px; color: white; cursor: pointer; border: none; }
+    .whatsapp { background: #25D366; }
+    .facebook { background: #1877F2; }
+    .twitter { background: #1DA1F2; }
+    .copy-btn { background: #6c757d; }
+    .user-info { background: rgba(26,35,126,0.3); padding: 15px; border-radius: 40px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    .user-info img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+    .history-section { background: rgba(26,35,126,0.2); border-radius: 20px; padding: 20px; margin-top: 20px; max-height: 300px; overflow-y: auto; }
+    .history-item { background: rgba(15,25,45,0.8); padding: 12px; margin: 10px 0; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .login-form { background: rgba(26,35,126,0.3); padding: 25px; border-radius: 20px; margin: 20px auto; max-width: 400px; }
+    .login-form input { width: 100%; padding: 12px; margin: 10px 0; background: #0a0f1a; border: 1px solid #3f51b5; border-radius: 12px; color: white; text-align: center; }
+    .code-input { letter-spacing: 2px; font-family: monospace; font-size: 1.2rem; }
+    .profile-container { text-align: center; margin-bottom: 20px; position: relative; display: inline-block; }
+    .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #ffd700; }
+    .edit-photo-btn { position: absolute; bottom: 0; right: 0; background: #ffd700; color: #1a237e; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .account-field { background: #0a0f1a; padding: 12px; border-radius: 30px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .account-field label { color: #ffd700; font-weight: bold; }
+    .account-field input { background: transparent; border: 1px solid #3f51b5; padding: 8px 15px; border-radius: 30px; color: white; flex: 1; }
+    .footer-links { text-align: center; margin-top: 30px; }
+    .footer-links a { color: #888; text-decoration: none; margin: 0 15px; font-size: 0.8rem; cursor: pointer; }
+    .about-content, .terms-content { background: rgba(26,35,126,0.2); padding: 25px; border-radius: 20px; text-align: left; line-height: 1.6; }
+    .about-content h3, .terms-content h3 { color: #ffd700; margin: 20px 0 10px 0; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
+    .modal-content { background: linear-gradient(135deg, #1a237e, #0d1b4a); padding: 25px; border-radius: 20px; max-width: 350px; text-align: center; border: 2px solid #ffd700; }
+    .modal-content input { width: 100%; padding: 12px; margin: 15px 0; background: #0a0f1a; border: 1px solid #ffd700; border-radius: 10px; color: white; text-align: center; }
+    .bourse-card { background: rgba(15,25,45,0.9); padding: 15px; margin: 15px 0; border-radius: 16px; border-left: 4px solid #ffd700; }
+    .bourse-card strong { color: #ffd700; font-size: 1.1rem; }
+    @media (max-width: 600px) { h1 { font-size: 1.8rem; } h2 { font-size: 1.4rem; } }
+  </style>
+</head>
+<body>
+
+<div class="floating-menu" id="floatingMenu">
+  <div class="menu-btn" onclick="toggleMenu()">⚙️</div>
+  <div class="menu-items">
+    <a onclick="goToPage(7); toggleMenu()"><i class="fas fa-user"></i> <span id="menuAccount">👤 Mon compte</span></a>
+    <a onclick="goToPage(8); toggleMenu()"><i class="fas fa-gem"></i> <span id="menuPremium">⭐ Premium</span></a>
+    <a onclick="showHistoryInMenu(); toggleMenu()"><i class="fas fa-history"></i> <span id="menuHistory">📜 Historique</span></a>
+    <a onclick="toggleLangMenu(); toggleMenu()"><i class="fas fa-globe"></i> <span id="menuLang">🌍 Langue</span></a>
+  </div>
+</div>
+
+<div id="langSubmenu" style="position: fixed; bottom: 130px; right: 20px; background: #1a237e; border-radius: 20px; padding: 10px; display: none; flex-direction: column; gap: 5px; z-index: 1001; border: 1px solid #ffd700;">
+  <button onclick="setLang('fr'); hideLangMenu()" style="margin:0; padding:8px 20px;">🇫🇷 Français</button>
+  <button onclick="setLang('en'); hideLangMenu()" style="margin:0; padding:8px 20px;">🇬🇧 English</button>
+  <button onclick="setLang('es'); hideLangMenu()" style="margin:0; padding:8px 20px;">🇪🇸 Español</button>
+</div>
+
+<!-- PAGE 1 ACCUEIL -->
+<div id="page1" class="page active">
+  <div class="logo"><i class="fas fa-graduation-cap"></i></div>
+  <h1 id="title1">FUTURE WORK</h1>
+  <p id="sub1" style="text-align:center; margin-bottom:25px; color:#aaa;">Découvre le métier qui te correspond</p>
+  <div id="userStatus"></div>
+  <div id="authButtons" style="text-align:center;">
+    <button class="btn-outline" onclick="goToPage(2)" style="margin-bottom:10px;" id="createAccountBtnHome">📱 Créer mon compte</button>
+    <button class="btn-outline" onclick="goToPage(9)" style="margin-bottom:10px;" id="reconnectBtnHome">🔐 Se reconnecter</button>
+    <button id="startBtn" onclick="goToPage(3)" id="startWithoutAccount">🚀 Commencer sans compte</button>
+  </div>
+  <div class="footer-links">
+    <a onclick="goToPage(5)">ℹ️ À propos</a>
+    <a onclick="goToPage(6)">📜 Conditions</a>
+  </div>
+</div>
+
+<!-- PAGE 2 CRÉATION COMPTE -->
+<div id="page2" class="page">
+  <h2 id="createTitle">📱 CRÉER MON COMPTE</h2>
+  <div class="login-form">
+    <input type="tel" id="phoneNumber" placeholder="Numéro (ex: 243XXXXXXXXX)">
+    <input type="text" id="secretCode" class="code-input" placeholder="Code secret (5 caractères)" maxlength="5">
+    <p style="font-size:0.7rem;">Ex: A#7k2, 9!Bv3</p>
+    <button id="createAccountBtn" style="width:100%;">✅ Créer mon compte</button>
+    <button class="btn-outline" onclick="goToPage(1)" style="width:100%; margin-top:10px;">⬅️ Retour</button>
+  </div>
+</div>
+
+<!-- PAGE 3 QUESTIONNAIRE -->
+<div id="page3" class="page">
+  <h2 id="quizTitle">📋 TEST D'ORIENTATION</h2>
+  <p id="quizDesc" style="color:#aaa;">Choisis ce qui te correspond</p>
+  <div id="questionsContainer"></div>
+  <button id="seeResultsBtn" onclick="calculerResultats()">🎯 VOIR RÉSULTATS</button>
+  <div id="errorMsg" style="color:#ff6b6b; margin-top:15px; display:none;"></div>
+</div>
+
+<!-- PAGE 4 RÉSULTATS -->
+<div id="page4" class="page">
+  <h2 id="resultsTitle">🎯 TES MÉTIERS</h2>
+  <div id="resultsContainer"></div>
+  <div class="share-buttons">
+    <button class="share-btn whatsapp" onclick="shareResults('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+    <button class="share-btn facebook" onclick="shareResults('facebook')"><i class="fab fa-facebook-f"></i> Facebook</button>
+    <button class="share-btn twitter" onclick="shareResults('twitter')"><i class="fab fa-twitter"></i> Twitter</button>
+    <button class="share-btn copy-btn" onclick="shareResults('copy')"><i class="fas fa-copy"></i> Copier</button>
+  </div>
+  <div id="historySection" style="display:none;" class="history-section">
+    <h3 id="historyTitle">📜 Historique</h3>
+    <div id="historyList"></div>
+    <button id="clearHistoryBtn" class="btn-outline" onclick="clearHistory()">🗑️ Effacer</button>
+  </div>
+  <button class="btn-outline" onclick="recommencer()">🔄 NOUVEAU TEST</button>
+</div>
+
+<!-- PAGE 5 À PROPOS -->
+<div id="page5" class="page">
+  <h2>ℹ️ À PROPOS</h2>
+  <div class="about-content">
+    <h3>🎓 FUTURE WORK</h3>
+    <p>Application d'orientation professionnelle</p>
+    <h3>⭐ PREMIUM (2$/mois)</h3>
+    <p>63 métiers, 10 questions, bourses d'études internationales</p>
+    <h3>👨‍💻 Créateur</h3>
+    <p>jusco25 - Version 2.0 - Avril 2026</p>
+  </div>
+  <button onclick="goToPage(1)">⬅️ RETOUR</button>
+</div>
+
+<!-- PAGE 6 CONDITIONS -->
+<div id="page6" class="page">
+  <h2>📜 CONDITIONS</h2>
+  <div class="terms-content">
+    <h3>1. COMPTE</h3>
+    <p>Créé avec numéro et code secret (5 caractères).</p>
+    <h3>2. PREMIUM</h3>
+    <p>2$/mois via Orange Money. Code d'activation valable 30 jours.</p>
+    <p>📞 WhatsApp : +243 85 100 88 42</p>
+    <p style="margin-top:15px;">Dernière mise à jour : 2 Avril 2026</p>
+  </div>
+  <button onclick="goToPage(1)">⬅️ RETOUR</button>
+</div>
+
+<!-- PAGE 7 MON COMPTE -->
+<div id="page7" class="page">
+  <h2 id="myAccountTitle">👤 MON COMPTE</h2>
+  <div style="background: rgba(26,35,126,0.3); border-radius: 30px; padding: 25px; margin: 20px auto; max-width: 450px;">
+    <div class="profile-container">
+      <img id="profileImage" class="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233f51b5'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='white' font-size='45'%3E👤%3C/text%3E%3C/svg%3E">
+      <input type="file" id="photoInput" accept="image/*" style="display:none;">
+      <div class="edit-photo-btn" id="addPhotoBtn">📷</div>
+    </div>
+    <div class="account-field"><label>📝 Nom</label><div><input type="text" id="usernameInput"><button id="saveUsernameBtn" class="btn-small">💾</button></div></div>
+    <div class="account-field"><label>📞 Téléphone</label><span id="displayPhone">-</span></div>
+    <div class="account-field"><label>🔐 Code secret</label><span id="displayCode">•••••</span></div>
+    <div class="account-field"><label>📅 Inscrit le</label><span id="displayDate">-</span></div>
+    <div class="account-field"><label>⭐ Premium</label><span id="premiumExpiry">-</span></div>
+    <button id="deleteAccountBtn" class="btn-danger">🗑️ Supprimer mon compte</button>
+  </div>
+  <button class="btn-outline" onclick="goToPage(1)">⬅️ RETOUR</button>
+</div>
+
+<!-- PAGE 8 PREMIUM -->
+<div id="page8" class="page">
+  <h2 id="premiumTitle">⭐ FUTURE WORK PREMIUM</h2>
+  <div class="premium-card">
+    <h3>⭐ DEVENIR PREMIUM</h3>
+    <p>🎓 63 métiers (43 + 20 premium)</p>
+    <p>📋 10 questions (7 + 3)</p>
+    <p>🌍 Bourses d'études internationales</p>
+    <p>📊 Rapport PDF détaillé</p>
+    <p>💬 Support prioritaire</p>
+    <div class="price">2 $ / mois</div>
+    <button id="orangeMoneyBtn" class="btn-orange" style="width:100%; margin-bottom:10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <i class="fas fa-mobile-alt"></i> Payer avec Orange Money
+    </button>
+    <button id="alreadyPaidBtn" class="btn-outline" style="width:100%;">
+      📋 J'ai déjà payé (entrer mon code)
+    </button>
+  </div>
+  <div class="premium-card">
+    <h3>🔐 ACTIVER MON COMPTE PREMIUM</h3>
+    <input type="text" id="accessCode" placeholder="Code d'activation reçu" style="width:80%; padding:12px; margin:15px 0; background:#0a0f1a; border:1px solid #ffd700; border-radius:30px; color:white; text-align:center;">
+    <button id="activerPremiumBtn" class="btn-gold">✅ Activer premium</button>
+    <p id="premiumStatus" style="margin-top:10px;"></p>
+  </div>
+  <div style="text-align:center; padding:15px; background:rgba(26,35,126,0.3); border-radius:20px;">
+    <p>📞 Support : <strong>+243 85 100 88 42</strong></p>
+    <a href="https://wa.me/243851008842" target="_blank" style="color:#25D366; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+      <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> WhatsApp
+    </a>
+  </div>
+  <button class="btn-outline" onclick="goToPage(1)">⬅️ RETOUR</button>
+</div>
+
+<!-- PAGE 9 RECONNEXION -->
+<div id="page9" class="page">
+  <h2 id="reconnectTitle">🔐 SE RECONNECTER</h2>
+  <div class="login-form">
+    <input type="tel" id="reconnectPhone" placeholder="Numéro">
+    <input type="text" id="reconnectCode" class="code-input" placeholder="Code secret" maxlength="5">
+    <button id="reconnectBtn" style="width:100%;">Se reconnecter</button>
+    <button class="btn-outline" onclick="goToPage(1)" style="width:100%; margin-top:10px;">⬅️ Retour</button>
+  </div>
+</div>
+
+<!-- PAGE 10 BOURSES -->
+<div id="page10" class="page">
+  <h2>🎓 BOURSES D'ÉTUDES</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:20px;">Sélectionnez votre destination</p>
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+    <button onclick="afficherBourses('asie')" class="btn-outline">🌏 ASIE</button>
+    <button onclick="afficherBourses('amerique')" class="btn-outline">🌎 AMÉRIQUE</button>
+    <button onclick="afficherBourses('afrique')" class="btn-outline">🌍 AFRIQUE</button>
+    <button onclick="afficherBourses('europe')" class="btn-outline">🌍 EUROPE</button>
+  </div>
+  <div id="boursesContainer" style="margin-top: 25px; max-height: 500px; overflow-y: auto;"></div>
+  <button class="btn-outline" onclick="goToPage(4)" style="margin-top:20px;">⬅️ RETOUR</button>
+</div>
+
+<div id="paymentModal" class="modal">
+  <div class="modal-content">
+    <h3 style="color:#ffd700;">💸 Paiement effectué ?</h3>
+    <p>Entrez votre code d'activation (valable 30 jours)</p>
+    <input type="text" id="codeTransaction" placeholder="Code d'activation">
+    <button id="verifierPaiementBtn" class="btn-gold">✅ Vérifier et activer</button>
+    <button onclick="fermerPopup()" style="background:#8b0000; margin-top:10px;">Fermer</button>
+  </div>
+</div>
+
+<div id="installBanner" style="position:fixed; bottom:20px; left:20px; right:20px; background:#1a237e; border-radius:50px; padding:12px 20px; display:none; align-items:center; justify-content:space-between; z-index:1000;">
+  <span>📱 Installer FUTURE WORK</span>
+  <button id="installBtn" style="background:#ffd700; color:#1a237e;">Installer</button>
+</div>
+
+<script>
+// ==================== TRADUCTIONS ====================
+const translations = {
+  fr: { title1:"FUTURE WORK", sub1:"Découvre le métier qui te correspond", createAccountBtnHome:"📱 Créer mon compte", reconnectBtnHome:"🔐 Se reconnecter", startWithoutAccount:"🚀 Commencer sans compte", menuAccount:"👤 Mon compte", menuPremium:"⭐ Premium", menuHistory:"📜 Historique", menuLang:"🌍 Langue", createTitle:"📱 CRÉER MON COMPTE", quizTitle:"📋 TEST D'ORIENTATION", quizDesc:"Choisis ce qui te correspond", seeResultsBtn:"🎯 VOIR RÉSULTATS", resultsTitle:"🎯 TES MÉTIERS", historyTitle:"📜 Historique", clearHistory:"🗑️ Effacer", myAccountTitle:"👤 MON COMPTE", premiumTitle:"⭐ FUTURE WORK PREMIUM", reconnectTitle:"🔐 SE RECONNECTER", errorMsg:"❌ Réponds à toutes les questions !", shareText:"🎯 Mes résultats FUTURE WORK !" },
+  en: { title1:"FUTURE WORK", sub1:"Discover the career that suits you", createAccountBtnHome:"📱 Create my account", reconnectBtnHome:"🔐 Reconnect", startWithoutAccount:"🚀 Start without account", menuAccount:"👤 My account", menuPremium:"⭐ Premium", menuHistory:"📜 History", menuLang:"🌍 Language", createTitle:"📱 CREATE MY ACCOUNT", quizTitle:"📋 ORIENTATION TEST", quizDesc:"Choose what suits you", seeResultsBtn:"🎯 SEE RESULTS", resultsTitle:"🎯 YOUR CAREERS", historyTitle:"📜 History", clearHistory:"🗑️ Clear", myAccountTitle:"👤 MY ACCOUNT", premiumTitle:"⭐ FUTURE WORK PREMIUM", reconnectTitle:"🔐 RECONNECT", errorMsg:"❌ Answer all questions!", shareText:"🎯 My FUTURE WORK results!" },
+  es: { title1:"FUTURE WORK", sub1:"Descubre la profesión que te conviene", createAccountBtnHome:"📱 Crear mi cuenta", reconnectBtnHome:"🔐 Reconectar", startWithoutAccount:"🚀 Comenzar sin cuenta", menuAccount:"👤 Mi cuenta", menuPremium:"⭐ Premium", menuHistory:"📜 Historial", menuLang:"🌍 Idioma", createTitle:"📱 CREAR MI CUENTA", quizTitle:"📋 TEST DE ORIENTACIÓN", quizDesc:"Elige lo que te conviene", seeResultsBtn:"🎯 VER RESULTADOS", resultsTitle:"🎯 TUS PROFESIONES", historyTitle:"📜 Historial", clearHistory:"🗑️ Borrar", myAccountTitle:"👤 MI CUENTA", premiumTitle:"⭐ FUTURE WORK PREMIUM", reconnectTitle:"🔐 RECONECTAR", errorMsg:"❌ ¡Responde todas las preguntas!", shareText:"🎯 ¡Mis resultados de FUTURE WORK!" }
+};
+let lang = 'fr';
+function updateAllTexts() { let t = translations[lang]; for(let id of ['title1','sub1','createAccountBtnHome','reconnectBtnHome','startWithoutAccount','menuAccount','menuPremium','menuHistory','menuLang','createTitle','quizTitle','quizDesc','seeResultsBtn','resultsTitle','historyTitle','clearHistoryBtn','myAccountTitle','premiumTitle','reconnectTitle']) { let el = document.getElementById(id); if(el) el.innerText = t[id] || el.innerText; } }
+function setLang(l) { lang = l; updateAllTexts(); localStorage.setItem('appLang', l); hideLangMenu(); }
+function toggleLangMenu() { let m = document.getElementById('langSubmenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+function hideLangMenu() { document.getElementById('langSubmenu').style.display = 'none'; }
+
+// ==================== 43 MÉTIERS DE BASE ====================
+const metiersBase = [
+  { nom:"Développeur web", desc:"Crée des sites et applications web.", form:"BAC+2 à BAC+5", qual:"Logique, curiosité", sal:"30-50k€/an", mat:["Maths","Informatique"], cat:["Bureau","Seul","Intellectuelle","Long","Créer"] },
+  { nom:"Infirmier", desc:"Soigne et accompagne les patients.", form:"BAC+3", qual:"Empathie, rigueur", sal:"22-35k€/an", mat:["SVT","Chimie"], cat:["Hôpital","Public","Manuelle","Moyen","Aider"] },
+  { nom:"Graphiste", desc:"Conçoit des visuels.", form:"BAC+2 à BAC+5", qual:"Créativité", sal:"25-45k€/an", mat:["Arts","Informatique"], cat:["Atelier","Seul","Créative","Moyen","Créer"] },
+  { nom:"Professeur", desc:"Enseigne et transmet.", form:"BAC+5", qual:"Pédagogie", sal:"25-50k€/an", mat:["Français","Maths"], cat:["Bureau","Public","Relationnelle","Long","Aider"] },
+  { nom:"Architecte", desc:"Conçoit des bâtiments.", form:"BAC+5", qual:"Créativité", sal:"30-60k€/an", mat:["Maths","Dessin"], cat:["Bureau","Equipe","Créative","Long","Créer"] },
+  { nom:"Mécanicien", desc:"Répare les véhicules.", form:"CAP", qual:"Minutie", sal:"22-35k€/an", mat:["Maths","Physique"], cat:["Atelier","Seul","Manuelle","Court","Argent"] },
+  { nom:"Chef cuisinier", desc:"Dirige la cuisine.", form:"CAP", qual:"Créativité", sal:"30-60k€/an", mat:["Cuisine"], cat:["Atelier","Equipe","Manuelle","Moyen","Créer"] },
+  { nom:"Coiffeur", desc:"Coupe les cheveux.", form:"CAP", qual:"Créativité", sal:"20-35k€/an", mat:["Technique"], cat:["Atelier","Public","Manuelle","Court","Aider"] },
+  { nom:"Plombier", desc:"Installe les canalisations.", form:"CAP", qual:"Rigueur", sal:"25-45k€/an", mat:["Maths","Physique"], cat:["Extérieur","Public","Manuelle","Court","Argent"] },
+  { nom:"Menuisier", desc:"Fabrique des meubles.", form:"CAP", qual:"Précision", sal:"22-38k€/an", mat:["Dessin","Maths"], cat:["Atelier","Seul","Manuelle","Court","Créer"] },
+  { nom:"Photographe", desc:"Prend des photos.", form:"Écoles photo", qual:"Créativité", sal:"25-40k€/an", mat:["Photo"], cat:["Extérieur","Seul","Créative","Moyen","Créer"] },
+  { nom:"Avocat", desc:"Défend ses clients.", form:"BAC+5", qual:"Éloquence", sal:"35-80k€/an", mat:["Français","Anglais"], cat:["Bureau","Public","Intellectuelle","Long","Aider"] },
+  { nom:"Journaliste", desc:"Recherche et transmet l'info.", form:"BAC+3", qual:"Curiosité", sal:"25-45k€/an", mat:["Français","Anglais"], cat:["Bureau","Public","Intellectuelle","Long","Aider"] },
+  { nom:"Pilote de ligne", desc:"Pilote des avions.", form:"École pilotage", qual:"Sang-froid", sal:"50-150k€/an", mat:["Maths","Physique","Anglais"], cat:["Extérieur","Equipe","Manuelle","Long","Argent"] },
+  { nom:"Médecin", desc:"Diagnostique et soigne.", form:"BAC+9", qual:"Rigueur", sal:"50-120k€/an", mat:["SVT","Chimie"], cat:["Hôpital","Public","Intellectuelle","Long","Aider"] },
+  { nom:"Dentiste", desc:"Soigne les dents.", form:"BAC+6", qual:"Précision", sal:"50-100k€/an", mat:["SVT"], cat:["Hôpital","Public","Manuelle","Long","Aider"] },
+  { nom:"Kinésithérapeute", desc:"Rééduque les patients.", form:"BAC+5", qual:"Douceur", sal:"30-60k€/an", mat:["SVT","EPS"], cat:["Hôpital","Public","Manuelle","Long","Aider"] },
+  { nom:"Psychologue", desc:"Aide mentalement.", form:"BAC+5", qual:"Écoute", sal:"30-60k€/an", mat:["Psycho","Français"], cat:["Bureau","Public","Relationnelle","Long","Aider"] },
+  { nom:"Comptable", desc:"Gère les comptes.", form:"BAC+2", qual:"Rigueur", sal:"28-50k€/an", mat:["Maths","Compta"], cat:["Bureau","Seul","Intellectuelle","Moyen","Argent"] },
+  { nom:"Commercial", desc:"Vend des produits.", form:"BAC+2", qual:"Persuasion", sal:"25-60k€/an", mat:["Communication"], cat:["Bureau","Public","Relationnelle","Court","Argent"] },
+  { nom:"Électricien", desc:"Installe des circuits.", form:"CAP", qual:"Précision", sal:"25-45k€/an", mat:["Physique"], cat:["Extérieur","Seul","Manuelle","Court","Argent"] },
+  { nom:"Soudeur", desc:"Soude des métaux.", form:"CAP", qual:"Minutie", sal:"25-45k€/an", mat:["Technique"], cat:["Atelier","Seul","Manuelle","Court","Argent"] },
+  { nom:"Maçon", desc:"Construit des bâtiments.", form:"CAP", qual:"Force", sal:"20-40k€/an", mat:["Technique"], cat:["Extérieur","Equipe","Manuelle","Court","Argent"] },
+  { nom:"Boulanger", desc:"Prépare pains et viennoiseries.", form:"CAP", qual:"Minutie", sal:"20-35k€/an", mat:["Technique"], cat:["Atelier","Seul","Manuelle","Court","Créer"] },
+  { nom:"Esthéticienne", desc:"Soins de beauté.", form:"CAP", qual:"Douceur", sal:"20-35k€/an", mat:["Technique"], cat:["Atelier","Public","Manuelle","Court","Aider"] },
+  { nom:"Assistant social", desc:"Aide les personnes en difficulté.", form:"BAC+3", qual:"Empathie", sal:"25-45k€/an", mat:["Français","Psycho"], cat:["Bureau","Public","Relationnelle","Moyen","Aider"] },
+  { nom:"Éducateur sportif", desc:"Anime des activités sportives.", form:"BPJEPS", qual:"Sportif", sal:"20-40k€/an", mat:["EPS"], cat:["Extérieur","Public","Manuelle","Court","Aider"] },
+  { nom:"Chauffeur routier", desc:"Conduit des poids lourds.", form:"CAP", qual:"Vigilance", sal:"25-45k€/an", mat:["Conduite"], cat:["Extérieur","Seul","Manuelle","Court","Argent"] },
+  { nom:"Agent de sécurité", desc:"Assure la sécurité.", form:"CAP", qual:"Vigilance", sal:"20-35k€/an", mat:["EPS"], cat:["Extérieur","Seul","Manuelle","Court","Argent"] },
+  { nom:"Serveur", desc:"Sert les clients.", form:"CAP", qual:"Sourire", sal:"18-30k€/an", mat:["Français"], cat:["Atelier","Public","Relationnelle","Court","Aider"] },
+  { nom:"Réceptionniste", desc:"Accueille les clients.", form:"Bac", qual:"Accueil", sal:"20-30k€/an", mat:["Français","Anglais"], cat:["Bureau","Public","Relationnelle","Court","Aider"] },
+  { nom:"Secrétaire médicale", desc:"Gère l'accueil médical.", form:"Bac+2", qual:"Organisation", sal:"22-35k€/an", mat:["Français","Informatique"], cat:["Hôpital","Public","Relationnelle","Court","Aider"] },
+  { nom:"Aide-soignant", desc:"Assiste les infirmiers.", form:"DEAS", qual:"Douceur", sal:"20-30k€/an", mat:["SVT"], cat:["Hôpital","Public","Manuelle","Court","Aider"] },
+  { nom:"Ambulancier", desc:"Transporte les malades.", form:"DEA", qual:"Sang-froid", sal:"22-35k€/an", mat:["SVT"], cat:["Hôpital","Equipe","Manuelle","Court","Aider"] },
+  { nom:"Agent d'entretien", desc:"Nettoie les locaux.", form:"CAP", qual:"Minutie", sal:"18-25k€/an", mat:["Technique"], cat:["Extérieur","Seul","Manuelle","Court","Argent"] },
+  { nom:"Jardinier", desc:"Entretient les espaces verts.", form:"CAP", qual:"Patience", sal:"18-30k€/an", mat:["Technique"], cat:["Extérieur","Seul","Manuelle","Court","Créer"] },
+  { nom:"Conducteur de bus", desc:"Conduit un bus.", form:"CAP", qual:"Vigilance", sal:"25-40k€/an", mat:["Conduite"], cat:["Extérieur","Public","Manuelle","Court","Argent"] },
+  { nom:"Facteur", desc:"Distribue le courrier.", form:"CAP", qual:"Organisation", sal:"20-30k€/an", mat:["Français"], cat:["Extérieur","Seul","Manuelle","Court","Aider"] },
+  { nom:"Agent de tri", desc:"Trie les déchets.", form:"CAP", qual:"Rapidité", sal:"18-25k€/an", mat:["Technique"], cat:["Atelier","Equipe","Manuelle","Court","Aider"] },
+  { nom:"Ouvrier agricole", desc:"Travaille dans les champs.", form:"CAP", qual:"Force", sal:"18-30k€/an", mat:["SVT"], cat:["Extérieur","Equipe","Manuelle","Court","Argent"] },
+  { nom:"Manutentionnaire", desc:"Déplace des charges.", form:"CAP", qual:"Force", sal:"18-28k€/an", mat:["Technique"], cat:["Atelier","Equipe","Manuelle","Court","Argent"] }
+];
+
+// ==================== 20 MÉTIERS PREMIUM ====================
+const metiersPremium = [
+  { nom:"Data Scientist", desc:"Analyse des données complexes.", form:"BAC+5", qual:"Maths, Stats", sal:"45-80k€/an", mat:["Maths","Info"], cat:["Bureau","Equipe","Intellectuelle","Long","Argent"] },
+  { nom:"UX/UI Designer", desc:"Conçoit des interfaces utilisateur.", form:"BAC+3", qual:"Créativité", sal:"35-60k€/an", mat:["Design","Info"], cat:["Bureau","Equipe","Créative","Moyen","Créer"] },
+  { nom:"Expert Cybersécurité", desc:"Protège les systèmes informatiques.", form:"BAC+5", qual:"Logique", sal:"50-90k€/an", mat:["Info","Maths"], cat:["Bureau","Seul","Intellectuelle","Long","Argent"] },
+  { nom:"Community Manager", desc:"Gère les réseaux sociaux.", form:"BAC+2", qual:"Créativité", sal:"25-40k€/an", mat:["Français","Communication"], cat:["Bureau","Public","Relationnelle","Court","Argent"] },
+  { nom:"Logisticien", desc:"Organise le transport.", form:"BAC+3", qual:"Organisation", sal:"30-50k€/an", mat:["Gestion","Maths"], cat:["Bureau","Equipe","Intellectuelle","Moyen","Argent"] },
+  { nom:"Biologiste", desc:"Étudie les êtres vivants.", form:"BAC+5", qual:"Rigueur", sal:"30-55k€/an", mat:["SVT","Chimie"], cat:["Hôpital","Equipe","Intellectuelle","Long","Aider"] },
+  { nom:"Traducteur", desc:"Traduit des textes.", form:"BAC+3", qual:"Langues", sal:"25-45k€/an", mat:["Anglais","Français"], cat:["Bureau","Seul","Intellectuelle","Moyen","Créer"] },
+  { nom:"Agent immobilier", desc:"Propose des biens.", form:"BAC+2", qual:"Relationnel", sal:"20-80k€/an", mat:["Gestion","Droit"], cat:["Extérieur","Public","Relationnelle","Court","Argent"] },
+  { nom:"Designer 3D", desc:"Crée des modèles 3D.", form:"BAC+3", qual:"Créativité", sal:"30-55k€/an", mat:["Arts","Info"], cat:["Atelier","Seul","Créative","Moyen","Créer"] },
+  { nom:"Consultant RH", desc:"Conseille les entreprises.", form:"BAC+5", qual:"Psychologie", sal:"40-70k€/an", mat:["Psycho","Gestion"], cat:["Bureau","Public","Relationnelle","Long","Aider"] },
+  { nom:"Infirmier anesthésiste", desc:"Assiste les anesthésistes.", form:"BAC+5", qual:"Rigueur", sal:"40-70k€/an", mat:["SVT","Chimie"], cat:["Hôpital","Equipe","Manuelle","Long","Aider"] },
+  { nom:"Développeur mobile", desc:"Crée des applis.", form:"BAC+3", qual:"Logique", sal:"35-60k€/an", mat:["Info","Anglais"], cat:["Bureau","Seul","Intellectuelle","Moyen","Créer"] },
+  { nom:"Chef de projet", desc:"Coordonne les équipes.", form:"BAC+5", qual:"Leadership", sal:"40-70k€/an", mat:["Gestion","Communication"], cat:["Bureau","Equipe","Relationnelle","Long","Argent"] },
+  { nom:"Podologue", desc:"Soigne les pieds.", form:"BAC+3", qual:"Minutie", sal:"30-50k€/an", mat:["SVT"], cat:["Hôpital","Public","Manuelle","Moyen","Aider"] },
+  { nom:"Zootechnicien", desc:"S'occupe des animaux.", form:"Bac+2", qual:"Passion animale", sal:"25-40k€/an", mat:["SVT"], cat:["Extérieur","Equipe","Manuelle","Court","Aider"] },
+  { nom:"Webmarketeur", desc:"Fait la promotion web.", form:"BAC+3", qual:"Créativité", sal:"30-55k€/an", mat:["Communication","Info"], cat:["Bureau","Equipe","Intellectuelle","Moyen","Argent"] },
+  { nom:"Assistant maternel", desc:"Garde des enfants.", form:"CAP", qual:"Douceur", sal:"20-30k€/an", mat:["Psycho"], cat:["Atelier","Public","Relationnelle","Court","Aider"] },
+  { nom:"Conseiller financier", desc:"Conseille sur les placements.", form:"BAC+3", qual:"Analyse", sal:"35-60k€/an", mat:["Maths","Éco"], cat:["Bureau","Public","Intellectuelle","Moyen","Argent"] },
+  { nom:"Responsable marketing", desc:"Définit la stratégie marketing.", form:"BAC+5", qual:"Créativité", sal:"45-80k€/an", mat:["Communication","Gestion"], cat:["Bureau","Equipe","Relationnelle","Long","Argent"] },
+  { nom:"Archéologue", desc:"Étudie les vestiges du passé.", form:"BAC+5", qual:"Patience", sal:"25-50k€/an", mat:["Histoire","SVT"], cat:["Extérieur","Equipe","Intellectuelle","Long","Aider"] }
+];
+
+function getMetiers() { return isPremium() ? [...metiersBase, ...metiersPremium] : metiersBase; }
+
+// ==================== QUESTIONS ====================
+const questionsBase = [
+  { text:"1. Environnement de travail préféré ?", type:"check", opts:["Bureau","Extérieur","Hôpital","Atelier"] },
+  { text:"2. Comment aimes-tu travailler ?", type:"check", opts:["Seul","En équipe","Au contact du public"] },
+  { text:"3. Type d'activité qui te motive ?", type:"check", opts:["Manuelle","Intellectuelle","Créative","Relationnelle"] },
+  { text:"4. Niveau d'études souhaité ?", type:"radio", opts:["Court","Moyen","Long","Peu importe"] },
+  { text:"5. Valeur la plus importante ?", type:"check", opts:["Aider","Argent","Créer","Temps libre"] },
+  { text:"6. Matières où tu es à l'aise ?", type:"text", placeholder:"Ex: Maths, Anglais, SVT..." },
+  { text:"7. Matières que tu aimes ?", type:"text", placeholder:"Ex: Histoire, Musique, Arts..." }
+];
+const questionsPremiumSupp = [
+  { text:"8. Combien d'heures par semaine veux-tu travailler ?", type:"radio", opts:["Moins de 20h","20-35h","35-40h","Plus de 40h"] },
+  { text:"9. Préfères-tu travailler près de chez toi ou voyager ?", type:"radio", opts:["Près de chez moi","Voyager occasionnellement","Voyager souvent"] },
+  { text:"10. Quel salaire minimum souhaites-tu ?", type:"radio", opts:["Moins de 500€","500-1000€","1000-2000€","Plus de 2000€"] }
+];
+function getQuestions() { return isPremium() ? [...questionsBase, ...questionsPremiumSupp] : questionsBase; }
+
+// ==================== SYSTÈME PREMIUM ====================
+function isPremium() { 
+  let expiry = localStorage.getItem('premium_expiry');
+  if (!expiry) return false;
+  if (Date.now() > parseInt(expiry)) {
+    localStorage.removeItem('premium_actif');
+    localStorage.removeItem('premium_expiry');
+    return false;
+  }
+  return localStorage.getItem('premium_actif') === 'oui';
+}
+
+function verifierStatutPremium() {
+  let statusDiv = document.getElementById('premiumStatus');
+  let expirySpan = document.getElementById('premiumExpiry');
+  if(isPremium()) {
+    let expiry = localStorage.getItem('premium_expiry');
+    let date = new Date(parseInt(expiry)).toLocaleDateString();
+    if(statusDiv) statusDiv.innerHTML = '✅ Premium activé jusqu\'au ' + date;
+    if(expirySpan) expirySpan.innerText = 'Actif jusqu\'au ' + date;
+  } else {
+    if(statusDiv) statusDiv.innerHTML = '❌ Version gratuite - 2$/mois pour premium';
+    if(expirySpan) expirySpan.innerText = 'Non actif';
+  }
+  }
+  function genererReference() { return "FW" + Date.now().toString().slice(-8) + Math.floor(Math.random()*1000); }
+let currentTransactionRef = "";
+
+// ==================== PAIEMENT ====================
+function paiementOrangeMoney() {
+  alert("📱 Paiement Orange Money RDC\n\n" +
+        "📞 Numéro : +243 85 100 88 42\n" +
+        "💰 Montant : 2$ (environ 5 000 FC)\n\n" +
+        "1️⃣ Ouvrez votre application Orange Money\n" +
+        "2️⃣ Choisissez 'Envoyer de l'argent'\n" +
+        "3️⃣ Entrez le numéro ci-dessus\n" +
+        "4️⃣ Entrez le montant de 5 000 FC\n" +
+        "5️⃣ Confirmez avec votre code secret\n\n" +
+        "📌 Après paiement, contactez-nous sur WhatsApp pour recevoir votre code d'activation.\n" +
+        "📞 WhatsApp : https://wa.me/243851008842");
+}
+document.getElementById("orangeMoneyBtn")?.addEventListener("click", paiementOrangeMoney);
+
+document.getElementById("alreadyPaidBtn")?.addEventListener("click", () => {
+  currentTransactionRef = genererReference();
+  document.getElementById("paymentModal").style.display = "flex";
+});
+function fermerPopup() { document.getElementById("paymentModal").style.display = "none"; document.getElementById("codeTransaction").value = ""; }
+
+function activerPremium(code) {
+  let now = Date.now();
+  let expiry = now + 30 * 24 * 60 * 60 * 1000; // 30 jours
+  localStorage.setItem('premium_actif', 'oui');
+  localStorage.setItem('premium_code', code);
+  localStorage.setItem('premium_expiry', expiry);
+  verifierStatutPremium();
+  alert("✅ Premium activé pour 30 jours !");
+  return true;
+}
+
+document.getElementById("verifierPaiementBtn")?.addEventListener("click", () => {
+  let code = document.getElementById("codeTransaction").value.trim();
+  let valides = ["PREMIUM2026", "FW2026", "TEST001"];
+  if(valides.includes(code)) {
+    activerPremium(code);
+    fermerPopup();
+    setTimeout(()=>location.reload(),1500);
+  } else alert("❌ Code invalide. Contactez le support WhatsApp: +243 85 100 88 42");
+});
+
+document.getElementById("activerPremiumBtn")?.addEventListener("click", () => {
+  let code = document.getElementById("accessCode").value.trim();
+  let valides = ["PREMIUM2026", "FW2026", "TEST001"];
+  if(valides.includes(code)) {
+    activerPremium(code);
+    setTimeout(()=>location.reload(),1000);
+  } else alert("❌ Code invalide. Achetez premium pour obtenir un code.");
+});
+
+// ==================== BOURSES ====================
+const bourses = {
+  asie: [
+    { nom:"Bourse MEXT (Japon)", pays:"Japon", institution:"Ministère japonais", univ:"Tokyo, Kyoto, Osaka", niveau:"Licence, Master, Doctorat", financement:"Entièrement financée", allocation:"117 000-143 000 JPY/mois", couverture:"Frais + allocation + billet avion", documents:"Dossier académique, lettres", date:"Avril-Mai 2026" },
+    { nom:"Bourse CSC (Chine)", pays:"Chine", institution:"Ministère Éducation", univ:"Tsinghua, Peking, Fudan", niveau:"Licence, Master, Doctorat", financement:"Entièrement financée", allocation:"2 500-3 500 CNY/mois", couverture:"Frais + logement + allocation", documents:"Diplômes, relevés, projet", date:"Février-Avril 2026" },
+    { nom:"Bourse GKS (Corée)", pays:"Corée du Sud", institution:"NIIED", univ:"Seoul National, KAIST, Yonsei", niveau:"Licence, Master, Doctorat", financement:"Entièrement financée", allocation:"1 000 000 KRW/mois", couverture:"Frais + allocation + billet avion", documents:"Diplômes, relevés, lettres", date:"Septembre-Octobre 2026" },
+    { nom:"Bourse ASEAN (Singapour)", pays:"Singapour", institution:"Gouvernement", univ:"NTU, NUS", niveau:"Master, Doctorat", financement:"Entièrement financée", allocation:"2 000-3 000 SGD/mois", couverture:"Frais + allocation + billet avion", documents:"CV, lettres, relevés", date:"Octobre 2026" },
+    { nom:"Stipendium Hungaricum", pays:"Hongrie", institution:"Tempus", univ:"Budapest, Eötvös Loránd", niveau:"Licence, Master, Doctorat", financement:"Entièrement financée", allocation:"43 700 HUF/mois", couverture:"Frais + allocation + logement", documents:"Diplômes, relevés, lettre", date:"Mi-janvier 2027" },
+    { nom:"Australia Awards", pays:"Australie", institution:"Gouvernement", univ:"Melbourne, ANU, Sydney", niveau:"Licence, Master, Doctorat", financement:"Entièrement financée", allocation:"30 000 AUD/an", couverture:"Frais + allocation + billet avion", documents:"Diplômes, CV, lettres", date:"30 Avril 2026" }
+  ],
+  amerique: [
+    { nom:"Fulbright (États-Unis)", pays:"États-Unis", institution:"Commission Fulbright", univ:"Harvard, Stanford, MIT", niveau:"Master, Doctorat", financement:"Entièrement financée", allocation:"20 000-35 000$/an", couverture:"Frais + allocation + billet avion", documents:"Projet, 3 lettres, CV", date:"31 Mai 2025" },
+    { nom:"Bourse OAS", pays:"Amériques", institution:"OEA", univ:"Réseau OAS", niveau:"Maîtrise, Doctorat", financement:"Partielle", allocation:"10 000 USD/an", couverture:"Frais + billet avion", documents:"Lettre admission, CV", date:"11 Mars 2026" },
+    { nom:"Bourse Vanier (Canada)", pays:"Canada", institution:"Gouvernement", univ:"Toronto, UBC, McGill", niveau:"Doctorat", financement:"Entièrement financée", allocation:"50 000 CAD/an", couverture:"Allocation 3 ans", documents:"CV, relevés, lettres", date:"Novembre 2026" }
+  ],
+  afrique: [
+    { nom:"AIMS (Afrique du Sud)", pays:"Afrique du Sud", institution:"AIMS", univ:"Cape Town, Stellenbosch", niveau:"Master, Doctorat", financement:"Intégral", allocation:"Allocation mensuelle", couverture:"Frais + hébergement + ordinateur", documents:"CV, relevés, lettres", date:"Février-Avril 2026" },
+    { nom:"MAECI – Afrique centrale", pays:"Italie", institution:"Ministère italien", univ:"Politecnico Milano, Bologna", niveau:"Master, Doctorat", financement:"Partielle", allocation:"10 800€/9 mois", couverture:"Allocation + assurance", documents:"Diplômes, CV, projet", date:"26 Mars 2026" }
+  ],
+  europe: [
+    { nom:"Bourse Eiffel (France)", pays:"France", institution:"Ministère", univ:"Sorbonne, Paris-Saclay", niveau:"Master, Doctorat", financement:"Entièrement financée", allocation:"1 200€/mois", couverture:"Allocation + billet avion", documents:"CV, lettre, diplômes", date:"5 Décembre 2025" },
+    { nom:"Erasmus+", pays:"Europe", institution:"UE", univ:"5 000+ établissements", niveau:"Licence à Doctorat", financement:"Cofinancement", allocation:"1 118-1 513€/mois", couverture:"Voyage + séjour", documents:"Dossier BRI", date:"Janvier-Avril 2026" },
+    { nom:"DAAD (Allemagne)", pays:"Allemagne", institution:"DAAD", univ:"LMU Munich, TU Berlin", niveau:"Master, Doctorat", financement:"Entièrement financée", allocation:"934-1 200€/mois", couverture:"Frais + allocation + voyage", documents:"CV, relevés, lettres", date:"Mai-Octobre 2026" },
+    { nom:"Paris-Saclay (France)", pays:"France", institution:"Paris-Saclay", univ:"CentraleSupélec", niveau:"Master", financement:"Excellence", allocation:"10 000€/an", couverture:"Allocation + aide visa", documents:"Admission requise", date:"31 Mars 2026" }
+  ]
+};
+
+function afficherBourses(region) {
+  let container = document.getElementById("boursesContainer");
+  if(!container) return;
+  container.innerHTML = "";
+  if(!isPremium()) {
+    container.innerHTML = '<div class="premium-card"><p>⭐ Cette fonctionnalité est réservée aux utilisateurs premium.</p><button onclick="goToPage(8)" class="btn-gold">Devenir premium (2$/mois)</button></div>';
+    return;
+  }
+  bourses[region].forEach(b => {
+    container.innerHTML += `
+      <div class="bourse-card">
+        <strong>🎓 ${b.nom}</strong>
+        <p>📍 ${b.pays} — ${b.institution}</p>
+        <p>🏛️ ${b.univ}</p>
+        <p>📚 Niveaux : ${b.niveau}</p>
+        <p>💰 Financement : ${b.financement}</p>
+        <p>💵 Allocation : ${b.allocation}</p>
+        <p>📦 Prise en charge : ${b.couverture}</p>
+        <p>📄 Documents : ${b.documents}</p>
+        <p>⏰ Date limite : ${b.date}</p>
+      </div>
+    `;
+  });
+}
+
+// ==================== AFFICHAGE QUESTIONNAIRE ====================
+function afficherQuestions() {
+  let container = document.getElementById("questionsContainer");
+  if(!container) return;
+  container.innerHTML = "";
+  let questions = getQuestions();
+  questions.forEach((q,idx)=>{
+    let div = document.createElement("div");
+    div.className = "question-card";
+    div.innerHTML = `<p>${q.text}</p>`;
+    if(q.type==="check") q.opts.forEach(opt=>{ div.innerHTML += `<label><input type="checkbox" name="q${idx}" value="${opt}"> ${opt}</label>`; });
+    else if(q.type==="radio") q.opts.forEach(opt=>{ div.innerHTML += `<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label>`; });
+    else div.innerHTML += `<input type="text" name="q${idx}" placeholder="${q.placeholder}">`;
+    container.appendChild(div);
+  });
+  if(isPremium()) { let badge = document.createElement("div"); badge.style.textAlign="center"; badge.innerHTML='<span class="premium-badge">⭐ Premium - 10 questions</span>'; container.appendChild(badge); }
+}
+
+function getReponses() {
+  let questions = getQuestions();
+  let rep = [];
+  for(let i=0;i<questions.length;i++) {
+    if(questions[i].type==="text") {
+      let inp = document.querySelector(`input[name="q${i}"]`);
+      if(!inp || !inp.value.trim()) return null;
+      rep.push(inp.value.trim().toLowerCase());
+    } else {
+      let selected = document.querySelectorAll(`input[name="q${i}"]:checked`);
+      if(selected.length===0) return null;
+      rep.push(Array.from(selected).map(s=>s.value));
+    }
+  }
+  return rep;
+}
+
+function calculerResultats() {
+  let rep = getReponses();
+  let errDiv = document.getElementById("errorMsg");
+  if(!rep) { errDiv.style.display = "block"; errDiv.innerText = translations[lang].errorMsg; return; }
+  errDiv.style.display = "none";
+  let matF = rep[5] ? rep[5].split(",").map(m=>m.trim()) : [];
+  let mA = rep[6] ? rep[6].split(",").map(m=>m.trim()) : [];
+  let metiersList = getMetiers();
+  let scores = metiersList.map(m=>{
+    let score=0;
+    if(rep[0].includes(m.cat[0])) score+=5;
+    if(rep[1].includes(m.cat[1])) score+=4;
+    if(rep[2].some(a=>m.cat[2].includes(a))) score+=4;
+    if(rep[3]===m.cat[3] || rep[3]==="Peu importe") score+=3;
+    if(rep[4].includes(m.cat[4])) score+=3;
+    let matM = m.mat.map(mm=>mm.toLowerCase());
+    matF.forEach(mf=>{ if(matM.some(mm=>mm.includes(mf))) score+=6; });
+    mA.forEach(ma=>{ if(matM.some(mm=>mm.includes(ma))) score+=2; });
+    return {...m, score};
+  });
+  let top3 = scores.sort((a,b)=>b.score-a.score).slice(0,3);
+  window.currentResults = top3;
+  let container = document.getElementById("resultsContainer");
+  container.innerHTML = "";
+  top3.forEach((m,i)=>{
+    container.innerHTML += `<div class="metier-card"><strong>${i+1}. ${m.nom}</strong><p>📝 ${m.desc}</p><p>🎓 ${m.form}</p><p>⭐ ${m.qual}</p><p>💰 ${m.sal}</p><p>📚 ${m.mat.join(", ")}</p><span class="badge">Score: ${m.score} pts</span></div>`;
+  });
+  if(isPremium()) {
+    container.innerHTML += '<div style="text-align:center;margin-top:15px;"><button onclick="goToPage(10)" class="btn-gold" style="background:#ffd700; color:#1a237e;">🎓 VOIR LES BOURSES D\'ÉTUDES</button></div>';
+    container.innerHTML += '<div style="text-align:center;margin-top:10px;"><span class="premium-badge">⭐ Premium - ' + metiersList.length + ' métiers analysés</span></div>';
+  } else {
+    container.innerHTML += '<div style="text-align:center;margin-top:15px;"><button onclick="goToPage(8)" class="btn-outline">⭐ Devenir premium (2$/mois) pour voir les bourses</button></div>';
+  }
+  let user = getCurrentUser();
+  if(user) { saveUserHistory(user.uid, top3.map(m=>({ nom:m.nom, score:m.score }))); displayHistory(user.uid); }
+  goToPage(4);
+}
+
+function shareResults(platform) {
+  let text = translations[lang].shareText + "\n";
+  if(window.currentResults) window.currentResults.forEach((m,i)=> text += `${i+1}. ${m.nom}\n`);
+  if(isPremium()) text += "\n⭐ Version Premium FUTURE WORK";
+  if(platform==='whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+  else if(platform==='facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,'_blank');
+  else if(platform==='twitter') window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,'_blank');
+  else { navigator.clipboard.writeText(text); alert("✅ Copié !"); }
+}
+function goToPage(num) { document.querySelectorAll(".page").forEach(p=>p.classList.remove("active")); document.getElementById(`page${num}`).classList.add("active"); if(num===3) afficherQuestions(); if(num===7) loadAccountPage(); if(num===8) verifierStatutPremium(); window.scrollTo({top:0}); }
+function toggleMenu() { document.getElementById("floatingMenu").classList.toggle("open"); }
+function recommencer() { document.querySelectorAll("input").forEach(i=>{ if(i.type==="checkbox"||i.type==="radio") i.checked=false; if(i.type==="text") i.value=""; }); afficherQuestions(); goToPage(3); }
+
+// ==================== STOCKAGE LOCAL ====================
+let currentUser = null;
+function generateUserId(phone,code){ return btoa(phone+":"+code).replace(/[^a-zA-Z0-9]/g,''); }
+function isValidCode(code){ return /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{5}$/.test(code); }
+function saveUser(phone,code,username=null){
+  let uid = generateUserId(phone,code);
+  let userData = { phone, code, username: username || phone.slice(-4), createdAt: new Date().toISOString(), history: [], profileImage: null };
+  localStorage.setItem(`user_${uid}`, JSON.stringify(userData));
+  localStorage.setItem('currentUserId', uid);
+}
+function getUser(uid){ let data = localStorage.getItem(`user_${uid}`); return data ? JSON.parse(data) : null; }
+function getCurrentUser(){ let uid = localStorage.getItem('currentUserId'); if(!uid) return null; let u = getUser(uid); return u ? { uid, ...u } : null; }
+function loginUser(phone,code){ let uid = generateUserId(phone,code); let u = getUser(uid); if(u && u.code===code){ localStorage.setItem('currentUserId',uid); return true; } return false; }
+function logout(){ localStorage.removeItem('currentUserId'); currentUser=null; location.reload(); }
+function deleteUserAccount(uid){ localStorage.removeItem(`user_${uid}`); localStorage.removeItem('currentUserId'); }
+function saveUserHistory(uid,results){
+  let u = getUser(uid);
+  if(u){ u.history = u.history || []; u.history.unshift({ date: new Date().toISOString(), results }); if(u.history.length>20) u.history.pop(); localStorage.setItem(`user_${uid}`, JSON.stringify(u)); }
+}
+function getUserHistory(uid){ let u = getUser(uid); return u ? (u.history||[]) : []; }
+function clearUserHistory(uid){ let u = getUser(uid); if(u){ u.history=[]; localStorage.setItem(`user_${uid}`, JSON.stringify(u)); } }
+function displayHistory(uid){
+  let hist = getUserHistory(uid);
+  let section = document.getElementById("historySection");
+  let list = document.getElementById("historyList");
+  if(!hist.length){ if(section) section.style.display="none"; return; }
+  section.style.display="block";
+  list.innerHTML="";
+  hist.forEach((item,idx)=>{
+    let d = new Date(item.date).toLocaleDateString();
+    let res = item.results.map((m,i)=>`${i+1}. ${m.nom}`).join(" | ");
+    list.innerHTML += `<div class="history-item"><span><strong>${d}</strong><br><small>${res}</small></span><button class="btn-outline btn-small" onclick="deleteHistoryItem(${idx})">🗑️</button></div>`;
+  });
+}
+function deleteHistoryItem(index){
+  let u = getCurrentUser(); if(!u) return;
+  let hist = getUserHistory(u.uid);
+  hist.splice(index,1);
+  localStorage.setItem(`user_${u.uid}`, JSON.stringify({ ...getUser(u.uid), history: hist }));
+  displayHistory(u.uid);
+}
+function clearHistory(){ let u = getCurrentUser(); if(u){ clearUserHistory(u.uid); displayHistory(u.uid); alert("✅ Historique effacé"); } }
+function showHistoryInMenu(){ let u = getCurrentUser(); if(!u){ alert("❌ Connectez-vous pour voir l'historique"); goToPage(9); } else { goToPage(4); displayHistory(u.uid); } }
+
+// ==================== AUTHENTIFICATION ====================
+document.getElementById("createAccountBtn")?.addEventListener("click", ()=>{
+  let phone = document.getElementById("phoneNumber").value.trim();
+  let code = document.getElementById("secretCode").value.trim();
+  if(!phone) { alert("❌ Entrez votre numéro"); return; }
+  if(!code || code.length!==5) { alert("❌ Code secret doit contenir 5 caractères"); return; }
+  if(!isValidCode(code)) { alert("❌ Code invalide (5 caractères: lettres/chiffres/symboles)"); return; }
+  let uid = generateUserId(phone,code);
+  let existing = getUser(uid);
+  if(!existing) saveUser(phone,code);
+  else if(existing.code === code) loginUser(phone,code);
+  else { alert("❌ Ce numéro existe avec un code différent"); return; }
+  currentUser = getCurrentUser(); goToPage(3); updateUIForLogin();
+});
+document.getElementById("reconnectBtn")?.addEventListener("click", ()=>{
+  let phone = document.getElementById("reconnectPhone").value.trim();
+  let code = document.getElementById("reconnectCode").value.trim();
+  if(!phone || !code) { alert("❌ Entrez numéro et code"); return; }
+  if(loginUser(phone,code)){ alert("✅ Connecté"); currentUser = getCurrentUser(); goToPage(3); updateUIForLogin(); }
+  else alert("❌ Numéro ou code incorrect");
+});
+function loadAccountPage(){
+  let u = getCurrentUser();
+  if(!u){ alert("❌ Connectez-vous"); goToPage(1); return; }
+  document.getElementById("usernameInput").value = u.username || "";
+  document.getElementById("displayPhone").innerText = u.phone;
+  document.getElementById("displayCode").innerText = "•••••";
+  if(u.createdAt) document.getElementById("displayDate").innerText = new Date(u.createdAt).toLocaleDateString();
+  if(u.profileImage) document.getElementById("profileImage").src = u.profileImage;
+  verifierStatutPremium();
+}
+document.getElementById("saveUsernameBtn")?.addEventListener("click", ()=>{
+  let u = getCurrentUser(); if(!u) return;
+  let newName = document.getElementById("usernameInput").value.trim();
+  if(!newName) { alert("❌ Entrez un nom"); return; }
+  let ud = getUser(u.uid); if(ud){ ud.username = newName; localStorage.setItem(`user_${u.uid}`, JSON.stringify(ud)); alert("✅ Nom mis à jour"); updateUIForLogin(); }
+});
+document.getElementById("addPhotoBtn")?.addEventListener("click", ()=> document.getElementById("photoInput").click());
+document.getElementById("photoInput")?.addEventListener("change", (e)=>{
+  let u = getCurrentUser(); if(!u) return;
+  let file = e.target.files[0]; if(file){
+    let reader = new FileReader();
+    reader.onload = function(ev){
+      document.getElementById("profileImage").src = ev.target.result;
+      let ud = getUser(u.uid); if(ud){ ud.profileImage = ev.target.result; localStorage.setItem(`user_${u.uid}`, JSON.stringify(ud)); alert("✅ Photo mise à jour"); updateUIForLogin(); }
+    };
+    reader.readAsDataURL(file);
+  }
+});
+document.getElementById("deleteAccountBtn")?.addEventListener("click", ()=>{
+  let u = getCurrentUser(); if(!u) return;
+  if(confirm("⚠️ Supprimer définitivement votre compte ?")){ deleteUserAccount(u.uid); alert("✅ Compte supprimé"); location.reload(); }
+});
+function updateUIForLogin(){
+  let u = getCurrentUser();
+  let authDiv = document.getElementById("authButtons");
+  let statusDiv = document.getElementById("userStatus");
+  if(u){
+    if(authDiv) authDiv.style.display = "none";
+    let photoHtml = u.profileImage ? `<img src="${u.profileImage}">` : `<i class="fas fa-user-circle" style="font-size:2rem;"></i>`;
+    let premiumBadge = isPremium() ? '<span class="premium-badge" style="margin-left:10px;">⭐ Premium</span>' : '';
+    if(statusDiv) statusDiv.innerHTML = `<div class="user-info">${photoHtml}<span>👋 ${u.username}${premiumBadge}</span><button class="btn-outline btn-small" onclick="goToPage(7)">👤 Mon compte</button><button class="btn-outline btn-small" onclick="logout()">Déconnexion</button></div>`;
+    displayHistory(u.uid);
+  } else {
+    if(authDiv) authDiv.style.display = "block";
+    if(statusDiv) statusDiv.innerHTML = "";
+    let histSec = document.getElementById("historySection");
+    if(histSec) histSec.style.display = "none";
+  }
+}
+
+// ==================== INITIALISATION ====================
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById("installBanner").style.display="flex"; });
+document.getElementById("installBtn")?.addEventListener("click", async ()=>{ if(deferredPrompt){ deferredPrompt.prompt(); let { outcome } = await deferredPrompt.userChoice; if(outcome==="accepted") document.getElementById("installBanner").style.display="none"; deferredPrompt=null; } });
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(console.log);
+window.onload = ()=>{
+  let savedLang = localStorage.getItem('appLang');
+  if(savedLang) setLang(savedLang); else setLang('fr');
+  afficherQuestions();
+  updateUIForLogin();
+  updateAllTexts();
+  verifierStatutPremium();
+};
+</script>
+</body>
+</html>
